@@ -18,6 +18,8 @@ const Login = (props) => {
 
   //Step 1a: Construct an AXIOS request to retrieve a token from the server. You'll use this token to interact with the API
   //Step 1b: Save the token to localStorage
+
+  //POST request
   const handleSubmit = event => {
     event.preventDefault();
     axiosWithAuth()
@@ -33,16 +35,18 @@ const Login = (props) => {
   return (
     <>
       <h1>Welcome to the Bubble App!</h1>
-      <form onSubmit={login}>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
           name="username"
+          placeholder="username"
           value={login.username}
           onChange={handleLogin}
         />
         <input
           type="password"
           name="password"
+          placeholder="password"
           value={login.password}
           onChange={handleLogin}
         />

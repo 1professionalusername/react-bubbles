@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import axios from "axios";
+import axiosWithAuth from "./axiosWithAuth";
 
 const initialColor = {
   color: "",
   code: { hex: "" }
 };
+
+//Step 2b: In `ColorList.js`, complete the `saveEdit` and `deleteColor` 
+//functions to make AJAX requests to the API to edit/delete data
+
 
 const ColorList = ({ colors, updateColors }) => {
   console.log(colors);
@@ -16,16 +20,40 @@ const ColorList = ({ colors, updateColors }) => {
     setColorToEdit(color);
   };
 
+  //PUT request
   const saveEdit = e => {
     e.preventDefault();
+    //console.log(colorToEdit)
     // Make a put request to save your updated color
     // think about where will you get the id from...
     // where is is saved right now?
+    axiosWithAuth()
+      .put(`http://localhost:5000/api/colors/${colorToEdit.id}`, colorToEdit)
+      .then(updateColorList())
+      .catch(error => console.log(error.response));
+
   };
 
+  //GET request
+  const updateColorList = () => {
+    axiosWithAuth()
+      .get("http://localhost:5000/api/colors")
+      .then(response => {
+        updateColors(response.data);
+      });
+  };
+
+
+  //DELETE request
   const deleteColor = color => {
     // make a delete request to delete this color
+    // console.log(color)
+    axiosWithAuth()
+      .delete(`http://localhost:5000/api/colors/${color.id}`)
+      .then(updateColorList())
+      .catch(err => console.log(err.response));
   };
+
 
   return (
     <div className="colors-wrap">
@@ -35,11 +63,11 @@ const ColorList = ({ colors, updateColors }) => {
           <li key={color.color} onClick={() => editColor(color)}>
             <span>
               <span className="delete" onClick={e => {
-                    e.stopPropagation();
-                    deleteColor(color)
-                  }
-                }>
-                  x
+                e.stopPropagation();
+                deleteColor(color)
+              }
+              }>
+                x
               </span>{" "}
               {color.color}
             </span>
@@ -85,5 +113,6 @@ const ColorList = ({ colors, updateColors }) => {
     </div>
   );
 };
+
 
 export default ColorList;
