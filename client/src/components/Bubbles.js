@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Pack } from "@potion/layout";
 import { Svg, Circle } from "@potion/element";
 
+//Step 2c: Watch and enjoy as your app responds to updates in the data. Check out `Bubbles.js` to see how this is built.
+
+
 const Bubbles = ({ colors }) => {
   const [bubbleData, setBubbleData] = useState([]);
   useEffect(() => {
